@@ -1,4 +1,3 @@
-# data model
-# - connoisseur: <uploader>
-# - name: 1.jpg
-# - time: <timestamp>
+# - bliss: 1.jpg
+#   moment: <timestamp>
+#   connoisseur: <user>
