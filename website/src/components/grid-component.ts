@@ -1,3 +1,5 @@
+import styles from "./grid-component.module.css"
+
 // Types for grid coordinates
 interface Point {
     x: number;
@@ -47,7 +49,7 @@ class MosaicProject {
 
     private scanAssets(num: number): void {
         const img = new Image();
-        img.src = `${num}.jpg`; 
+        img.src = `${num}.jpg`;
         img.onload = () => {
             this.foundImages.push(img);
             if (this.foundImages.length < this.grid.length) {
@@ -72,7 +74,7 @@ class MosaicProject {
             } else {
                 // CHANGED: Use quickFade instead of drawInstant
                 await this.quickFade(img, pos);
-                
+
                 if (i % 5 === 0) {
                     this.updateUI("Reconstructing", i + 1);
                 }
@@ -90,10 +92,10 @@ class MosaicProject {
             const step = () => {
                 opacity += speed;
                 this.ctx.globalAlpha = opacity;
-                
+
                 this.ctx.clearRect(pos.x, pos.y, this.tileSize, this.tileSize);
                 this.ctx.drawImage(img, pos.x, pos.y, this.tileSize, this.tileSize);
-                
+
                 if (opacity < 1) {
                     requestAnimationFrame(step);
                 } else {
@@ -109,25 +111,25 @@ class MosaicProject {
         return new Promise((resolve) => {
             let opacity = 0;
             let glow = 0;
-            
+
             const step = () => {
-                opacity += 0.03; 
+                opacity += 0.03;
                 glow += 1.2;
-                
+
                 this.ctx.save(); // Save state to contain the glow
                 this.ctx.globalAlpha = opacity;
                 this.ctx.shadowBlur = glow;
                 this.ctx.shadowColor = GLOW_COLOR;
-                
+
                 const pulseScale = 1.15 - (0.15 * opacity);
                 const currentSize = this.tileSize * pulseScale;
                 const offset = (currentSize - this.tileSize) / 2;
-                
+
                 this.ctx.clearRect(pos.x - 5, pos.y - 5, this.tileSize + 10, this.tileSize + 10);
                 this.ctx.drawImage(img, pos.x - offset, pos.y - offset, currentSize, currentSize);
-                
+
                 this.ctx.restore(); // Restore state (clears shadowBlur for next draw)
-                
+
                 if (opacity < 1) {
                     requestAnimationFrame(step);
                 } else {
@@ -151,14 +153,8 @@ export const GridComponent = () => {
     setTimeout(() => { new MosaicProject(); }, 0);
 
     return `
-    <div id="bg-image"></div>
-    <!--
-    <div id="status-plate">
-        <span id="mode" style="display:none"></span>
-        Goal: <span id="count">0</span>
-    </div>
-    -->
-    <canvas id="mosaicCanvas"></canvas>`;
+    <div class="${styles.bgImage}"></div>
+    <canvas id="mosaicCanvas" class="${styles.mosaicCanvas}"></canvas>`;
 }
 
 export default GridComponent;

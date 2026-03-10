@@ -1,7 +1,11 @@
+import styles from "./upload-component.module.css"
+
+// TODO: Clicking button should have open animation.
+
 export const UploadComponent = () => {
     return `
-<section class="hero">
-    <button href="#">Upload?</button>
+<section class="${styles.hero}">
+    <button href="#" class="${styles.button}">upload</button>
 </section>
 `
 }
