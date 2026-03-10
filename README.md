@@ -1,1 +1,1 @@
-![Marlboro Connect](./marlboro-connect.avif)
+![Marlboro Maruti](./assets/marlboro-maruti.jpg)
