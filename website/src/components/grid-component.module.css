@@ -1,0 +1,22 @@
+:root {
+    --glow-color: #FFC107;
+}
+
+.bgImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('marlboro-maruti.jpg') no-repeat center center;
+    background-size: cover;
+    filter: sepia(1) brightness(0.25) contrast(1.2) hue-rotate(-10deg);
+    z-index: 1;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
