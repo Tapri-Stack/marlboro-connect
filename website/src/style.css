@@ -21,10 +21,15 @@ body, html {
     height: 100vh;
     
     /* Ensure the path is correct for Vite's public folder */
-    background: url('/marlboro-maruti.jpg') no-repeat center center;
+    background: url('marlboro-maruti.jpg') no-repeat center center;
     background-size: cover;
     
-    filter: brightness(0.25);
+    /* sepia(1): Full color shift
+       brightness(0.25): Keep it dark so tiles pop
+       contrast(1.2): Makes the shadows deeper
+       hue-rotate(-10deg): Shifts the yellow slightly toward a warmer red-brown
+    */
+    filter: sepia(1) brightness(0.25) contrast(1.2) hue-rotate(-10deg);
     z-index: 1;
 }
 
@@ -44,17 +49,23 @@ canvas {
     z-index: 2; /* Sits on top of bg-image */
 }
 
-/* The status text UI */
 #status-plate {
     position: fixed;
     bottom: 20px;
     left: 20px;
     z-index: 100;
     color: var(--glow-color);
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.85); /* Slightly darker for better contrast */
     padding: 10px 15px;
     border-left: 3px solid var(--glow-color);
     font-size: 12px;
     text-transform: uppercase;
-    pointer-events: none; /* Don't block mouse clicks */
+    pointer-events: none;
+    
+    /* Adds the "Ember" Glow */
+    text-shadow: 0 0 8px rgba(255, 193, 7, 0.6);
+    box-shadow: -10px 0 20px -10px rgba(255, 193, 7, 0.3);
+    
+    /* Optional: subtle letter spacing for a technical look */
+    letter-spacing: 1px;
 }
