@@ -1,0 +1,71 @@
+name: Marlboro Protocol
+on: [push, pull_request]
+
+jobs:
+  protocol:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install NLTK
+        run: pip install nltk
+
+      - name: Validate Commit Message
+        shell: python
+        run: |
+          import nltk
+          import subprocess
+          import sys
+
+          # 1. Setup NLTK (English Grammar Database)
+          nltk.download('averaged_perceptron_tagger_eng', quiet=True)
+          nltk.download('punkt_tab', quiet=True)
+
+          # 2. Get the latest commit message
+          try:
+              msg = subprocess.check_output(['git', 'log', '-1', '--pretty=%B']).decode('utf-8').strip()
+          except Exception as e:
+              print(f"❌ Error reading git log: {e}")
+              sys.exit(1)
+
+          print(f"Validating message: '{msg}'")
+          words = msg.split()
+
+          # --- RULE 1: Exactly 2 words ---
+          if len(words) != 2:
+              print(f"❌ FAILED: Found {len(words)} words. Must have exactly 2.")
+              sys.exit(1)
+
+          # --- RULE 2 & 3: 1st is 'Marlboro' and Both are Capitalized ---
+          if words[0] != "Marlboro":
+              print("❌ FAILED: 1st word must be exactly 'Marlboro'")
+              sys.exit(1)
+          
+          if not words[1][0].isupper():
+              print(f"❌ FAILED: Second word '{words[1]}' must be Capitalized.")
+              sys.exit(1)
+
+          # --- RULE 4: Second word is a Noun ---
+          tokens = nltk.word_tokenize(words[1])
+          tags = nltk.pos_tag(tokens)
+          
+          if not tags:
+              print("❌ FAILED: Could not parse the second word.")
+              sys.exit(1)
+
+          word, tag = tags[0]
+
+          # NN: Noun, NNP: Proper Noun, NNS: Noun Plural
+          if not tag.startswith('NN'):
+              print(f"❌ FAILED: '{word}' is not a noun (detected as {tag}).")
+              sys.exit(1)
+
+          # FIXED: Properly terminated f-string
+          print(f"✅ PASSED: '{msg}' matches the Marlboro Protocol.")
