@@ -6,7 +6,7 @@ interface Point {
 
 // Configuration Constants
 const TARGET_TILE_COUNT: number = 2000;
-const GLOW_COLOR: string = "#00f2ff";
+const GLOW_COLOR: string = "#FFC107";
 
 class MosaicProject {
     private canvas: HTMLCanvasElement;
